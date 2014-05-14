@@ -14,6 +14,7 @@ var EventEmitter = require('events').EventEmitter
         , joinServer = Yggdrasil.joinServer
         , states = protocol.states
         , debug = protocol.debug
+        , uuid = require('node-uuid')
         ;
 
 module.exports = {
@@ -184,7 +185,7 @@ function createServer(options) {
     }
 
     function loginClient() {
-      client.write(0x02, {uuid: (client.uuid | 0).toString(10), username: client.username});
+      client.write(0x02, {uuid: uuid.unparse(uuid.parse(client.uuid)), username: client.username});
       client.state = states.PLAY;
       loggedIn = true;
       startKeepAlive();
